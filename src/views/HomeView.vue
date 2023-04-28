@@ -54,7 +54,7 @@ body {
         <li
           class="w-full px-6 py-2 flex justify-center items-center bg-white rounded-lg"
           v-for="todo in todosOrderByAscending"
-          :key="todo.createdAt"
+          :key="todo.id"
           :class="`todo-list ${todo.done && 'done'}`"
         >
           <label>
@@ -63,10 +63,7 @@ body {
           </label>
           <div class="w-full ml-6 flex">
             <h2 :class="`w-full flex items-center ${todo.done ?? 'done'}`">{{ todo.content }}</h2>
-            <button
-              class="bg-red-600 text-white rounded px-6 py-2"
-              @click="removeTodo(todo.createdAt)"
-            >
+            <button class="bg-red-600 text-white rounded px-6 py-2" @click="removeTodo(todo)">
               Delete
             </button>
           </div>
@@ -92,7 +89,9 @@ const todosOrderByAscending = computed(() =>
 
 const addTodo = () => {
   let i = 0
-  if (content.value.trim() === '' || content.value === null) return
+  if (content.value.trim() === '' || content.value === null) {
+    return
+  }
 
   todos.value.push(
     {
@@ -110,7 +109,7 @@ const addTodo = () => {
 }
 
 const removeTodo = (todo) => {
-  this.todos.value = this.todos.filter((list) => list !== todo)
+  todos.value = todos.value.filter((list) => list !== todo)
 }
 
 watch(name, (newVal) => localStorage.setItem('name', newVal))
